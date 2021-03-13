@@ -10,7 +10,10 @@ function App() {
   const provider = new firebase.auth.GoogleAuthProvider();
   const handleSignIn = () => {
     firebase.auth().signInWithPopup(provider)
-    .then(res => console.log(res))
+    .then(res => {
+      const {displayName, email} = res.user;
+      console.log(displayName, email);
+    })
   }
   return (
     <div className="App">
