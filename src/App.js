@@ -10,7 +10,8 @@ function App() {
   const [user, setUser] = useState({
     isSignedIn: false,
     name: '',
-    email: ''
+    email: '',
+    password: ''
   });
 
   const provider = new firebase.auth.GoogleAuthProvider();
@@ -46,15 +47,21 @@ function App() {
   }
 
   const handleBlur = (event) => {
-    console.log(event.target.name, event.target.value);
+    let isFormValid = true;
+    // console.log(event.target.name, event.target.value);
+
     if(event.target.name === 'email'){
-      const isEmailValid = /\S+@\S+\.\S+/.test(event.target.value);
-      console.log(isEmailValid);
+      isFormValid = /\S+@\S+\.\S+/.test(event.target.value);
     }
     else if(event.target.name === 'password'){
       const isPasswordValid = event.target.value.length > 6;
       const passwordHasNumber = /\d/.test(event.target.value);
-      console.log(isPasswordValid && passwordHasNumber);
+      isFormValid = isPasswordValid && passwordHasNumber;
+    }
+    if(isFormValid){
+      const newUserInfo = {...user};
+      newUserInfo[event.target.name] = event.target.value;
+      setUser(newUserInfo);
     }
   }
   const handleSubmit = () => {
@@ -75,6 +82,8 @@ function App() {
       {/* <button onClick={handleSignIn}>Sign in</button> */}
 
       <h1>Our own Authentication</h1>
+      <p>Email: {user.email}</p>
+      <p>Password: {user.password}</p>
       <form onSubmit={handleSubmit}>
         <input type="email" name="email" onBlur={handleBlur} placeholder="Write your email address" required/>
         <br/>
