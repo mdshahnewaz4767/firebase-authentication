@@ -11,7 +11,9 @@ function App() {
     isSignedIn: false,
     name: '',
     email: '',
-    password: ''
+    password: '',
+    error: '',
+    success: false
   });
 
   const provider = new firebase.auth.GoogleAuthProvider();
@@ -47,25 +49,41 @@ function App() {
   }
 
   const handleBlur = (event) => {
-    let isFormValid = true;
+    let isFieldValid = true;
     // console.log(event.target.name, event.target.value);
 
     if(event.target.name === 'email'){
-      isFormValid = /\S+@\S+\.\S+/.test(event.target.value);
+      isFieldValid = /\S+@\S+\.\S+/.test(event.target.value);
     }
     if(event.target.name === 'password'){
       const isPasswordValid = event.target.value.length > 6;
       const passwordHasNumber = /\d/.test(event.target.value);
-      isFormValid = isPasswordValid && passwordHasNumber;
+      isFieldValid = isPasswordValid && passwordHasNumber;
     }
-    if(isFormValid){
+    if(isFieldValid){
       const newUserInfo = {...user};
       newUserInfo[event.target.name] = event.target.value;
       setUser(newUserInfo);
     }
   }
-  const handleSubmit = () => {
-
+  const handleSubmit = (event) => {
+    if(user.email && user.password){
+      firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+      .then(res => {
+        const newUserInfo = {...user};
+        newUserInfo.error = '';
+        newUserInfo.success = true;
+        setUser(newUserInfo);
+        // console.log(res);
+      })
+      .catch(error => {
+        const newUserInfo = {...user};
+        newUserInfo.error = error.message;
+        newUserInfo.success = false;
+        setUser(newUserInfo);
+      });
+    }
+    event.preventDefault();
   }
 
   return (
@@ -94,6 +112,8 @@ function App() {
         <br/>
         <input type="submit" value="Submit"/>
       </form>
+      <p style={{color: 'red'}}>{user.error}</p>
+      {user.success && <p style={{color: 'green'}}>User created successfully</p>}
     </div>
   );
 }
