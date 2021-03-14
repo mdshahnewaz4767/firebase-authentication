@@ -4,7 +4,8 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import firebaseConfig from './firebase.config';
 
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig)
+
 function App() {
   const [user, setUser] = useState({
     isSignedIn: false,
@@ -44,6 +45,13 @@ function App() {
     .catch(error => {})
   }
 
+  const handleChange = (event) => {
+    console.log(event.target.value);
+  }
+  const handleSubmit = () => {
+
+  }
+
   return (
     <div className="App">
       
@@ -56,6 +64,15 @@ function App() {
         <button onClick={handleSignIn}>Sign in</button>
       }
       {/* <button onClick={handleSignIn}>Sign in</button> */}
+
+      <h1>Our own Authentication</h1>
+      <form action="">
+        <input type="email" onChange={handleChange} placeholder="Write your email address" required/>
+        <br/>
+        <input type="password" onChange={handleChange} placeholder="Your password" required/>
+        <br/>
+        <input type="submit" value="Submit"/>
+      </form>
     </div>
   );
 }
