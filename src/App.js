@@ -53,7 +53,7 @@ function App() {
     if(event.target.name === 'email'){
       isFormValid = /\S+@\S+\.\S+/.test(event.target.value);
     }
-    else if(event.target.name === 'password'){
+    if(event.target.name === 'password'){
       const isPasswordValid = event.target.value.length > 6;
       const passwordHasNumber = /\d/.test(event.target.value);
       isFormValid = isPasswordValid && passwordHasNumber;
@@ -82,9 +82,12 @@ function App() {
       {/* <button onClick={handleSignIn}>Sign in</button> */}
 
       <h1>Our own Authentication</h1>
+      <p>Name: {user.name}</p>
       <p>Email: {user.email}</p>
       <p>Password: {user.password}</p>
       <form onSubmit={handleSubmit}>
+        <input type="text" name="name" onBlur={handleBlur} placeholder="Your name"/>
+        <br/>
         <input type="email" name="email" onBlur={handleBlur} placeholder="Write your email address" required/>
         <br/>
         <input type="password" name="password" onBlur={handleBlur} placeholder="Your password" required/>
