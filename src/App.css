@@ -5,6 +5,7 @@
 input{
   margin: 5px 0px;
 }
+input[type="text"],
 input[type="email"],
 input[type="password"]{
   padding: 10px;
